@@ -1,176 +1,167 @@
-# Plan: "My Work" Section — Three-Lane Portfolio UX
+# Plan: Homepage Expansion — Full Digital CV
 
 ## Context
 
-The current `id="work"` section in `HomePage.tsx` has a flat mix of case studies and dev projects. The user wants three clearly separated content types — **Design Portfolio**, **Dev Projects**, and **Case Studies** — each with its own browsing UX appropriate to how that content is consumed. Real content will be added later; the implementation uses realistic sample data.
+The homepage currently has Hero → About Me (bio + 3 pillars + flat experience list + skill tags) → Footer. The user wants it to work as a full LinkedIn replacement with structured experience (jobs / freelance / volunteer), education (degree + certs), a visual toolkit, an at-a-glance info bar, and a downloadable resume. This plan also suggests additional sections that strengthen the page as a professional document.
 
 ---
 
-## UX Architecture Decision
+## New Page Structure
 
-### Why three vertical lanes (not tabs)
-
-Tabs hide content. For a portfolio that needs to communicate breadth and depth at a glance, **all three lanes are visible by scrolling** — but a sticky in-section jump bar lets visitors navigate directly to any lane. This means:
-
-- Visitors understand the full scope immediately
-- No cognitive effort to "discover" hidden content
-- Scroll-spy highlights the active lane in the jump bar (optional phase-two)
-- Each lane remains independently filterable
-
-### Section entry: Three category preview cards
-
-Before the lanes, three large "entry cards" at the top of the section act as both preview and navigation anchors. Each card shows:
-- Lane name + count
-- Short descriptor
-- Representative visual thumbnail
-- Scrolls to the relevant lane on click
-
----
-
-## Three Lane Designs
-
-### Lane 1 — Design Portfolio
-
-**Goal:** Show visual breadth — branding, UI/UX, graphic design.
-
-**Layout:** Masonry-style grid (2 col desktop, 1 col mobile). Each card:
-- Square/landscape image (Unsplash placeholder)
-- Category badge (Branding / UI·UX / Graphic)
-- Project name + client/context
-- Hover overlay: short descriptor + "View Project" arrow
-
-**Filter:** Pill filter row — All · Branding · UI/UX · Graphic Design — client-side filter via `useState`.
-
-**Sample projects (6):**
-| Name | Category | Description |
-|---|---|---|
-| Nexus | Branding | Complete brand identity & design system for a B2B SaaS startup |
-| Atlas | UI/UX | Analytics dashboard redesign — 40 screens, shipped |
-| Pulse | UI/UX | Consumer health app, iOS + Android |
-| Orbit | UI/UX | E-commerce platform — from 0 to launch |
-| Flux | Graphic | Marketing campaign — landing page, ads, print |
-| Arc | Branding | Conference identity, wayfinding, collateral |
-
----
-
-### Lane 2 — Dev Projects
-
-**Goal:** Communicate technical credibility and open-source contribution.
-
-**Layout:** Featured project (full width, richer detail) + 3-column compact card grid below.
-
-**Featured card anatomy:** Project name, full description, tech stack, outcome stat, GitHub + live links, "Featured" badge.
-
-**Compact card anatomy:** Name, 1-liner, tech tags, star count, icon links.
-
-**Filter:** Type pills — All · Library · CLI · Full-Stack · Template
-
-**Sample projects (4):**
-| Name | Type | Stars |
-|---|---|---|
-| react-tokens | Library | 1.2k |
-| figma-exporter | CLI | 480 |
-| supabase-kit | Full-Stack | 820 |
-| api-scaffold | Template | 310 |
-
----
-
-### Lane 3 — Case Studies
-
-**Goal:** Narrative depth — show thinking, not just output.
-
-**Layout:** Two large editorial cards per row. Each card:
-- Cover image (left or top)
-- Category badge (Design · Dev · Full-Stack)
-- Project name + one-line challenge statement
-- Key outcome metric in a highlighted callout
-- "Read Case Study →" CTA
-
-**Hover state:** Card lifts, image zooms slightly.
-
-**Sample case studies (4):**
-| Title | Type | Outcome |
-|---|---|---|
-| Atlas Analytics | Full-Stack | +32% DAU post-launch |
-| Pulse Health | Full-Stack | 4.8★ · 50k downloads |
-| react-tokens | Dev | 1.2k GitHub stars, used by 80+ teams |
-| Zynk Design System | Design | Internal system powering all client work |
-
----
-
-## Implementation Plan
-
-### Files to create
-
-| File | Purpose |
-|---|---|
-| `src/app/components/WorkSection.tsx` | All three lanes + category preview cards + in-section jump nav |
-| `src/app/components/DesignPortfolio.tsx` | Design lane: filtered image grid |
-| `src/app/components/DevProjects.tsx` | Dev lane: featured + compact card grid |
-| `src/app/components/CaseStudies.tsx` | Case study lane: editorial cards |
-
-### File to modify
-
-| File | Change |
-|---|---|
-| `src/app/pages/HomePage.tsx` | Replace the existing `id="work"` section with `<WorkSection />` |
-
----
-
-## Component details
-
-### `WorkSection.tsx`
-```tsx
-// Renders:
-// 1. Section header
-// 2. Three entry/preview cards (Palette | Code2 | FileText icons)
-//    - Each scrolls to its lane anchor (id="design", id="dev", id="cases")
-// 3. In-section sticky jump bar: Design · Dev · Case Studies
-// 4. <DesignPortfolio /> with id="design"
-// 5. <DevProjects /> with id="dev"  
-// 6. <CaseStudies /> with id="cases"
+```
+Hero  (existing — add Download CV button)
+↓
+At-a-Glance Bar          ← NEW
+↓
+About                    (existing bio, condensed)
+↓
+Experience               ← RESTRUCTURED (tabbed: Full-Time · Freelance · Volunteer)
+↓
+Education                ← NEW (Degree card + Certifications grid)
+↓
+Toolkit                  ← REPLACES flat skills (visual, categorised)
+↓
+Testimonials             ← NEW (suggested)
+↓
+Now                      ← NEW (suggested)
+↓
+Footer  (existing — add Download CV button)
 ```
 
-### `DesignPortfolio.tsx`
-- `useState` for active filter
-- Projects array filtered client-side
-- Images sourced via Unsplash MCP at build time
-- Cards: `overflow-hidden rounded-xl border` with `group` hover state
+---
 
-### `DevProjects.tsx`
-- First item in array renders as featured card (full-width, more detail)
-- Remaining items in 3-col grid
-- `useState` for type filter
-- Star counts as static data
+## Section Specs
 
-### `CaseStudies.tsx`
-- 2-column grid on desktop, 1 on mobile
-- Uses Unsplash images from the two existing case studies
-- Two more case studies with generated placeholder images
-- Outcome metric inside a `color-mix(primary 8%)` callout block
+### 1. At-a-Glance Bar
+A slim horizontal strip that pins directly below the hero. Scannable at a glance — no interaction needed.
+
+| Item | Example |
+|---|---|
+| Location | Manchester, UK · Remote |
+| Status | 🟢 Open to Work |
+| Years Active | Since 2018 (auto-calc) |
+| Focus | Design + Engineering |
+| Work Type | Freelance · Advisory · Full-time |
+| Timezone | GMT/BST |
+
+**Layout:** `max-w-6xl` centred, 6 items in a row on desktop, 2-col grid on mobile. Each item: small icon + label (muted) + value (bold). Separated by thin vertical dividers. Background: `var(--secondary)` with top/bottom border.
 
 ---
 
-## Sticky in-section jump nav
+### 2. About (bio) — condensed
+Keep the two-column bio + currently card. Remove the "What I Do" three-pillar cards — those are better served by the separate Work page. Replace with a compact "Currently" card + a few quick highlights.
 
-A `position: sticky; top: 64px` (below main nav) bar inside the work section:
-```tsx
-<div className="sticky top-16 z-40 bg-background/95 backdrop-blur-sm border-b border-border">
-  <div className="max-w-6xl mx-auto px-6 py-3 flex gap-6">
-    {['Design', 'Dev', 'Case Studies'].map(…)}
-  </div>
-</div>
-```
+---
 
-Each button does `document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })`.
+### 3. Experience — tabbed with timeline
+
+**Tabs:** `Full-Time` · `Freelance / Contract` · `Volunteer`
+
+Each tab renders a **vertical timeline**:
+- Continuous vertical line on the left (primary/20 colour)
+- Each entry: coloured dot on the line + role, company, period, description, tag chips
+- "Current" entry: filled blue dot, badge
+
+**Sample data (placeholder — user will update):**
+
+*Full-Time:*
+- Founder & Product Lead — Zynk (2022–Present)
+- Front-End Engineer — TechCo (2018–2020)
+
+*Freelance:*
+- Senior Product Designer & Developer — Independent (2020–2022) [15+ projects]
+- UI/UX Consultant — Various clients (2019–2020)
+
+*Volunteer:*
+- Design Mentor — ADPList (2021–Present)
+- Open Source Contributor — Various (2019–Present)
+
+---
+
+### 4. Education
+
+Two sub-sections:
+
+**Degree card** (full width):
+- University name, degree title, field of study, year
+- Clean card with university info + any notable achievements/modules
+
+**Certifications grid** (3-col desktop, 2 mobile):
+- Each cert: icon/emoji or coloured badge, cert name, issuing org, year, optional "Verify →" link
+- Sample certs: Google UX Design, AWS Cloud Practitioner, Meta Frontend, Scrum Master
+
+---
+
+### 5. Toolkit — visual, categorised
+
+Replace flat skill tag chips with a richer layout. Two columns:
+
+**Design** (left):
+- Figma, Framer, Adobe XD, Photoshop, Illustrator, Principle, Spline
+
+**Development** (right):
+- Languages: TypeScript, JavaScript, Python
+- Frontend: React, Next.js, Tailwind CSS, Three.js
+- Backend: Node.js, PostgreSQL, GraphQL, Prisma
+- Infrastructure: Vercel, AWS, Docker, Supabase
+
+Each tool: small icon area (emoji/text) + tool name + optional proficiency dot (★ primary, ○ muted).
+
+---
+
+### 6. Download Resume PDF
+
+**Placement:** Two locations:
+1. Hero section — secondary outline button next to "View My Work"
+2. Footer — text link
+
+**Implementation:** Static PDF in `public/resume.pdf`. Button uses `<a href="/resume.pdf" download>`. Placeholder file until user uploads real PDF.
+
+---
+
+## Suggested Additional Sections
+
+### A. Testimonials ⭐ (highest value)
+3–4 quotes from clients or colleagues. Each card: quote, name, role + company, optional photo avatar. Use `<Card>` in a 2-col grid or a horizontal scroll on mobile. This is the single most powerful conversion element missing from the page.
+
+### B. Now 🟢
+A short, personal "what I'm currently doing" block — current project, what I'm learning, what I'm reading, where I'm based. Updates frequently. Gives the page a live, human feel that LinkedIn doesn't have. Single card, mid-page.
+
+### C. Writing / Thoughts
+A 2–3 card preview of published articles, essays, or blog posts. Title, publication, date, 1-line excerpt. Links out. Even if currently empty, the placeholder sets intent.
+
+### D. Numbers / Impact
+A row of 4–5 bold metrics: not just "40+ projects" but specific, verifiable outcomes. E.g., "€2M in client revenue influenced", "50k app downloads", "1.2k GitHub stars". Positioned just after the bio.
+
+---
+
+## Files to Create / Modify
+
+| File | Action |
+|---|---|
+| `src/app/pages/HomePage.tsx` | Major restructure: add at-a-glance bar, download button, import new sections |
+| `src/app/components/AtAGlanceBar.tsx` | NEW — slim info strip |
+| `src/app/components/ExperienceSection.tsx` | NEW — tabbed timeline |
+| `src/app/components/EducationSection.tsx` | NEW — degree card + certs grid |
+| `src/app/components/ToolkitSection.tsx` | NEW — visual tool display |
+| `src/app/components/TestimonialsSection.tsx` | NEW — quote cards |
+| `src/app/components/NowSection.tsx` | NEW — current focus card |
+| `public/resume.pdf` | ADD — placeholder PDF file |
+
+---
+
+## Reused Components
+- `Badge`, `Card`, `CardContent`, `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`, `Separator` from `src/app/components/ui/`
+- `SectionLabel` + `SectionTitle` helpers defined in `HomePage.tsx` (move to shared file)
 
 ---
 
 ## Verification
-
-1. Three category entry cards render above the lanes
-2. Jump nav sticks below the main nav when scrolling within the work section
-3. Filter pills in Design lane show/hide projects correctly (client-side, no layout shift)
-4. Featured dev project renders full-width; remaining in grid
-5. Case study cards have consistent image height and proper hover state
-6. All sample data renders without errors; images load from Unsplash URLs
+1. At-a-glance bar renders all 6 items on desktop, 2-col on mobile
+2. Experience tabs switch correctly between Full-Time / Freelance / Volunteer
+3. Timeline vertical line renders correctly; current role has filled dot
+4. Education degree card + cert grid render without overflow
+5. Toolkit shows both design and dev columns with tool names
+6. Testimonials show at least 3 cards
+7. Download Resume button triggers file download
+8. No layout shift when switching experience tabs

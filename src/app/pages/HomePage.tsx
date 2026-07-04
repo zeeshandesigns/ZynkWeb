@@ -5,17 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../co
 import { Separator } from "../components/ui/separator";
 import {
   ArrowRight,
-  ArrowUpRight,
   Code2,
-  ExternalLink,
-  Github,
   Layers,
-  Linkedin,
-  Mail,
   MapPin,
   Palette,
-  Star,
-  Twitter,
   Zap,
 } from "lucide-react";
 
@@ -98,55 +91,6 @@ const skillGroups: { label: string; items: string[] }[] = [
   },
 ];
 
-const caseStudies = [
-  {
-    title: "Atlas Analytics",
-    subtitle: "SaaS Dashboard Redesign",
-    description:
-      "Redesigned the core analytics product for a Series A SaaS company. Led UX research with 20+ user interviews, designed 40+ screens, and shipped the React frontend — solo.",
-    outcome: "32% uplift in daily active usage post-launch.",
-    tags: ["Product Design", "React", "TypeScript", "Recharts"],
-    image:
-      "https://images.unsplash.com/photo-1656231267330-f605c1c16a57?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9kdWN0JTIwZGVzaWduJTIwZGFzaGJvYXJkJTIwVUklMjBkYXJrJTIwbWluaW1hbHxlbnwxfHx8fDE3ODMxNTc4Nzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-  },
-  {
-    title: "Pulse Health",
-    subtitle: "Consumer Mobile App",
-    description:
-      "End-to-end product design and development for a health-tracking app. From discovery and wireframes to shipped iOS and Android. Sole designer and co-developer on a two-person team.",
-    outcome: "4.8★ App Store rating · 50k downloads in 3 months.",
-    tags: ["React Native", "UX Research", "Figma", "Node.js"],
-    image:
-      "https://images.unsplash.com/photo-1581287053822-fd7bf4f4bfec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2JpbGUlMjBhcHAlMjBVWCUyMGludGVyZmFjZSUyMGRlc2lnbiUyMGNsZWFufGVufDF8fHx8MTc4MzE1Nzg4MHww&ixlib=rb-4.1.0&q=80&w=1080",
-  },
-];
-
-const devProjects = [
-  {
-    name: "react-tokens",
-    description:
-      "Open-source CSS design token library. Generates typed token sets from Figma variables and outputs CSS custom properties, SCSS, or JSON.",
-    tags: ["TypeScript", "CSS", "npm"],
-    stars: "1.2k",
-    url: "#",
-  },
-  {
-    name: "figma-exporter",
-    description:
-      "CLI tool to sync Figma variables to code tokens across multiple output formats. Used by 80+ design teams in production.",
-    tags: ["Node.js", "CLI", "Figma API"],
-    stars: "480",
-    url: "#",
-  },
-  {
-    name: "supabase-kit",
-    description:
-      "Opinionated Next.js + Supabase starter with auth, RBAC, and a fully type-safe database client. Production-ready from day one.",
-    tags: ["Next.js", "Supabase", "PostgreSQL"],
-    stars: "820",
-    url: "#",
-  },
-];
 
 // ─── Section header ───────────────────────────────────────────────────────────
 
@@ -189,8 +133,6 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export default function HomePage() {
-  const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <div className="min-h-full">
@@ -280,21 +222,16 @@ export default function HomePage() {
 
           {/* CTAs */}
           <div className="flex flex-wrap gap-3 mt-8">
-            <Button
-              size="lg"
-              onClick={() => scrollTo("work")}
-              style={{ letterSpacing: "-0.025em" }}
-            >
-              View My Work <ArrowRight className="w-4 h-4" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={() => scrollTo("contact")}
-              style={{ letterSpacing: "-0.025em" }}
-            >
-              Get in Touch
-            </Button>
+            <Link to="/work">
+              <Button size="lg" style={{ letterSpacing: "-0.025em" }}>
+                View My Work <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+            <Link to="/contact">
+              <Button size="lg" variant="outline" style={{ letterSpacing: "-0.025em" }}>
+                Get in Touch
+              </Button>
+            </Link>
           </div>
 
           {/* Stats */}
@@ -492,10 +429,9 @@ export default function HomePage() {
                       fontFamily: "'Plus Jakarta Sans', sans-serif",
                       fontWeight: 600,
                       fontSize: "0.8rem",
-                      letterSpacing: "-0.01em",
+                      letterSpacing: "0.05em",
                       color: "var(--muted-foreground)",
                       textTransform: "uppercase",
-                      letterSpacing: "0.05em",
                     }}
                     className="mb-3"
                   >
@@ -519,248 +455,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── My Work ──────────────────────────────────────────────────────── */}
-      <section
-        id="work"
-        className="py-24 border-t border-border"
-        style={{ background: "var(--secondary)" }}
-      >
-        <div className="max-w-6xl mx-auto px-6">
-
-          {/* Case Studies */}
-          <SectionLabel>Portfolio</SectionLabel>
-          <SectionTitle>Case Studies</SectionTitle>
-          <p className="text-muted-foreground mb-12 max-w-xl" style={{ letterSpacing: "-0.02em", lineHeight: 1.7 }}>
-            End-to-end work — from research and strategy through to shipped product.
-          </p>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-20">
-            {caseStudies.map((cs) => (
-              <Card
-                key={cs.title}
-                className="group overflow-hidden hover:shadow-lg transition-shadow cursor-pointer border-border"
-              >
-                {/* Image */}
-                <div className="relative overflow-hidden" style={{ height: "220px" }}>
-                  <img
-                    src={cs.image}
-                    alt={cs.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div
-                    className="absolute inset-0"
-                    style={{ background: "linear-gradient(to top, var(--foreground) 0%, transparent 50%)", opacity: 0.5 }}
-                  />
-                  <div className="absolute bottom-3 left-4">
-                    <Badge style={{ background: "rgba(255,255,255,0.15)", color: "white", border: "1px solid rgba(255,255,255,0.2)", backdropFilter: "blur(8px)", fontSize: "0.7rem", letterSpacing: "-0.01em" }}>
-                      Case Study
-                    </Badge>
-                  </div>
-                </div>
-
-                <CardContent className="pt-5 pb-6">
-                  <div className="mb-3">
-                    <p
-                      style={{
-                        fontFamily: "'Plus Jakarta Sans', sans-serif",
-                        fontWeight: 700,
-                        fontSize: "1.2rem",
-                        letterSpacing: "-0.03em",
-                      }}
-                    >
-                      {cs.title}
-                    </p>
-                    <p className="text-muted-foreground" style={{ fontSize: "0.875rem", letterSpacing: "-0.015em" }}>
-                      {cs.subtitle}
-                    </p>
-                  </div>
-
-                  <p className="text-muted-foreground mb-4" style={{ fontSize: "0.875rem", letterSpacing: "-0.015em", lineHeight: 1.65 }}>
-                    {cs.description}
-                  </p>
-
-                  <div
-                    className="flex items-center gap-2 p-3 rounded-lg mb-4"
-                    style={{ background: "color-mix(in oklch, var(--primary) 8%, transparent)" }}
-                  >
-                    <Zap className="w-3.5 h-3.5 text-primary shrink-0" />
-                    <p style={{ fontSize: "0.8rem", letterSpacing: "-0.01em", color: "var(--primary)", fontWeight: 500 }}>
-                      {cs.outcome}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-wrap gap-1.5">
-                      {cs.tags.map((tag) => (
-                        <Badge key={tag} variant="outline" style={{ fontSize: "0.7rem", letterSpacing: "-0.01em" }}>
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                    <button className="text-primary hover:opacity-70 transition-opacity shrink-0 ml-2">
-                      <ArrowUpRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <Separator className="mb-20" />
-
-          {/* Dev Projects */}
-          <SectionLabel>Open Source</SectionLabel>
-          <SectionTitle>Dev Projects</SectionTitle>
-          <p className="text-muted-foreground mb-10 max-w-xl" style={{ letterSpacing: "-0.02em", lineHeight: 1.7 }}>
-            Tools I built for myself and open-sourced for the community.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {devProjects.map((proj) => (
-              <Card key={proj.name} className="group hover:border-primary/40 transition-colors h-full flex flex-col">
-                <CardContent className="pt-5 flex flex-col flex-1">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <Github className="w-4 h-4 text-muted-foreground" />
-                      <p
-                        style={{
-                          fontFamily: "'Plus Jakarta Sans', sans-serif",
-                          fontWeight: 700,
-                          fontSize: "0.9375rem",
-                          letterSpacing: "-0.025em",
-                        }}
-                      >
-                        {proj.name}
-                      </p>
-                    </div>
-                    <a
-                      href={proj.url}
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-
-                  <p className="text-muted-foreground flex-1 mb-4" style={{ fontSize: "0.825rem", letterSpacing: "-0.015em", lineHeight: 1.65 }}>
-                    {proj.description}
-                  </p>
-
-                  <div className="flex items-center justify-between mt-auto">
-                    <div className="flex flex-wrap gap-1.5">
-                      {proj.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" style={{ fontSize: "0.68rem", letterSpacing: "-0.01em" }}>
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-1 text-muted-foreground shrink-0 ml-2">
-                      <Star className="w-3 h-3" />
-                      <span style={{ fontSize: "0.75rem", letterSpacing: "-0.01em" }}>{proj.stars}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Contact ──────────────────────────────────────────────────────── */}
-      <section id="contact" className="py-28 border-t border-border">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-
-            {/* Left */}
-            <div>
-              <SectionLabel>Contact Me</SectionLabel>
-              <SectionTitle>
-                Let's build<br />
-                <span style={{ color: "var(--primary)" }}>something great.</span>
-              </SectionTitle>
-              <p className="text-muted-foreground mb-8 max-w-md" style={{ letterSpacing: "-0.02em", lineHeight: 1.75 }}>
-                Available for freelance projects, long-term partnerships, advisory roles, and full-time opportunities. If you have an idea or a problem worth solving, I want to hear about it.
-              </p>
-
-              <div className="flex items-center gap-2 mb-2">
-                <span
-                  className="inline-block w-1.5 h-1.5 rounded-full"
-                  style={{ background: "oklch(0.65 0.20 145)" }}
-                />
-                <span style={{ fontSize: "0.8rem", letterSpacing: "-0.01em", color: "var(--muted-foreground)" }}>
-                  Available · Responding within 24h
-                </span>
-              </div>
-            </div>
-
-            {/* Right — contact links */}
-            <div className="space-y-3">
-              {[
-                {
-                  icon: Mail,
-                  label: "Email",
-                  value: "hello@zynk.studio",
-                  href: "mailto:hello@zynk.studio",
-                  sub: "Best for project enquiries",
-                },
-                {
-                  icon: Linkedin,
-                  label: "LinkedIn",
-                  value: "linkedin.com/in/zeeshanh",
-                  href: "#",
-                  sub: "Connect & follow updates",
-                },
-                {
-                  icon: Github,
-                  label: "GitHub",
-                  value: "github.com/zeeshanh",
-                  href: "#",
-                  sub: "Open-source projects",
-                },
-                {
-                  icon: Twitter,
-                  label: "Twitter / X",
-                  value: "@zeeshanh",
-                  href: "#",
-                  sub: "Thoughts on design & code",
-                },
-              ].map(({ icon: Icon, label, value, href, sub }) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:border-primary/40 hover:bg-accent/20 transition-all group"
-                >
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                    style={{ background: "color-mix(in oklch, var(--primary) 10%, transparent)" }}
-                  >
-                    <Icon className="w-4.5 h-4.5 text-primary" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p style={{ fontSize: "0.7rem", letterSpacing: "-0.01em", color: "var(--muted-foreground)" }}>
-                      {label}
-                    </p>
-                    <p
-                      style={{
-                        fontFamily: "'Plus Jakarta Sans', sans-serif",
-                        fontWeight: 600,
-                        fontSize: "0.9rem",
-                        letterSpacing: "-0.02em",
-                      }}
-                      className="truncate"
-                    >
-                      {value}
-                    </p>
-                    <p style={{ fontSize: "0.75rem", letterSpacing: "-0.01em", color: "var(--muted-foreground)" }}>
-                      {sub}
-                    </p>
-                  </div>
-                  <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ── Footer ───────────────────────────────────────────────────────── */}
       <footer className="border-t border-border py-8">
@@ -777,17 +471,29 @@ export default function HomePage() {
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="text-muted-foreground" style={{ fontSize: "0.8rem", letterSpacing: "-0.01em" }}>
-              Built with React + Tailwind
-            </span>
+          <div className="flex items-center gap-4 flex-wrap justify-center">
+            <Link
+              to="/work"
+              className="text-muted-foreground hover:text-primary transition-colors"
+              style={{ fontSize: "0.8rem", letterSpacing: "-0.01em" }}
+            >
+              My Work
+            </Link>
+            <Separator orientation="vertical" className="h-4" />
+            <Link
+              to="/contact"
+              className="text-muted-foreground hover:text-primary transition-colors"
+              style={{ fontSize: "0.8rem", letterSpacing: "-0.01em" }}
+            >
+              Contact
+            </Link>
             <Separator orientation="vertical" className="h-4" />
             <Link
               to="/design-system"
               className="text-muted-foreground hover:text-primary transition-colors"
               style={{ fontSize: "0.8rem", letterSpacing: "-0.01em" }}
             >
-              Design System →
+              Design System
             </Link>
           </div>
         </div>

@@ -1,0 +1,219 @@
+import { useState } from "react";
+import { ArrowUpRight } from "lucide-react";
+import { Badge } from "./ui/badge";
+
+type DesignFilter = "All" | "Branding" | "UI/UX" | "Graphic";
+
+const designProjects = [
+  {
+    name: "Nexus",
+    category: "Branding" as const,
+    description:
+      "Complete brand identity & design system for a B2B SaaS startup — logo, colour, type, and component guidelines.",
+    image:
+      "https://images.unsplash.com/photo-1763705857736-2b4f16a33758?auto=format&fit=crop&w=800&q=80",
+    year: "2024",
+    tags: ["Logo", "Brand System", "Guidelines"],
+  },
+  {
+    name: "Atlas",
+    category: "UI/UX" as const,
+    description:
+      "SaaS analytics dashboard redesign — 40+ screens spanning onboarding, data views, reports, and settings.",
+    image:
+      "https://images.unsplash.com/photo-1656231267330-f605c1c16a57?auto=format&fit=crop&w=800&q=80",
+    year: "2023",
+    tags: ["Dashboard", "Data Viz", "Figma"],
+  },
+  {
+    name: "Pulse",
+    category: "UI/UX" as const,
+    description:
+      "Health-tracking mobile app. From discovery and wireframes to high-fidelity screens for iOS and Android.",
+    image:
+      "https://images.unsplash.com/photo-1581287053822-fd7bf4f4bfec?auto=format&fit=crop&w=800&q=80",
+    year: "2023",
+    tags: ["Mobile", "iOS", "User Research"],
+  },
+  {
+    name: "Orbit",
+    category: "UI/UX" as const,
+    description:
+      "E-commerce platform redesign for a fashion brand. Reduced checkout drop-off by 40% post-launch.",
+    image:
+      "https://images.unsplash.com/photo-1706700392642-dee59f678a09?auto=format&fit=crop&w=800&q=80",
+    year: "2024",
+    tags: ["E-Commerce", "Mobile", "UX Research"],
+  },
+  {
+    name: "Flux",
+    category: "Graphic" as const,
+    description:
+      "Full campaign for a creative agency — landing page, social ads, OOH, and print collateral.",
+    image:
+      "https://images.unsplash.com/photo-1609605348579-3123e3d40eb8?auto=format&fit=crop&w=800&q=80",
+    year: "2022",
+    tags: ["Campaign", "Print", "Digital"],
+  },
+  {
+    name: "Arc",
+    category: "Branding" as const,
+    description:
+      "Identity system and packaging for a design + technology conference. Covers wayfinding, merch, and digital.",
+    image:
+      "https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?auto=format&fit=crop&w=800&q=80",
+    year: "2023",
+    tags: ["Identity", "Packaging", "Wayfinding"],
+  },
+];
+
+const filters: DesignFilter[] = ["All", "Branding", "UI/UX", "Graphic"];
+
+const counts: Record<DesignFilter, number> = {
+  All: designProjects.length,
+  Branding: designProjects.filter((p) => p.category === "Branding").length,
+  "UI/UX": designProjects.filter((p) => p.category === "UI/UX").length,
+  Graphic: designProjects.filter((p) => p.category === "Graphic").length,
+};
+
+const badgeVariant: Record<DesignFilter, "default" | "secondary" | "outline"> = {
+  All: "default",
+  Branding: "default",
+  "UI/UX": "secondary",
+  Graphic: "outline",
+};
+
+export function DesignPortfolio() {
+  const [active, setActive] = useState<DesignFilter>("All");
+  const shown =
+    active === "All" ? designProjects : designProjects.filter((p) => p.category === active);
+
+  return (
+    <div>
+      {/* Filter pills */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        {filters.map((f) => (
+          <button
+            key={f}
+            onClick={() => setActive(f)}
+            className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border transition-all"
+            style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontWeight: 500,
+              fontSize: "0.8rem",
+              letterSpacing: "-0.01em",
+              background: active === f ? "var(--primary)" : "var(--card)",
+              color: active === f ? "var(--primary-foreground)" : "var(--foreground)",
+              borderColor: active === f ? "var(--primary)" : "var(--border)",
+            }}
+          >
+            {f}
+            <span
+              style={{
+                fontSize: "0.65rem",
+                opacity: active === f ? 0.7 : 0.5,
+                background: active === f ? "rgba(255,255,255,0.2)" : "var(--muted)",
+                borderRadius: "99px",
+                padding: "0 5px",
+                lineHeight: "1.4",
+              }}
+            >
+              {counts[f]}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {shown.map((project) => (
+          <div
+            key={project.name}
+            className="group relative overflow-hidden rounded-xl border border-border cursor-pointer transition-shadow hover:shadow-lg"
+            style={{ background: "var(--card)" }}
+          >
+            {/* Image */}
+            <div className="overflow-hidden" style={{ aspectRatio: "4 / 3" }}>
+              <img
+                src={project.image}
+                alt={project.name}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+
+            {/* Hover overlay */}
+            <div
+              className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              style={{
+                background:
+                  "linear-gradient(to top, rgba(10,14,30,0.92) 0%, rgba(10,14,30,0.4) 55%, transparent 100%)",
+              }}
+            >
+              <p
+                className="text-white mb-1"
+                style={{
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontWeight: 700,
+                  fontSize: "1.05rem",
+                  letterSpacing: "-0.03em",
+                }}
+              >
+                {project.name}
+              </p>
+              <p
+                className="text-white/75 mb-3"
+                style={{ fontSize: "0.775rem", letterSpacing: "-0.01em", lineHeight: 1.55 }}
+              >
+                {project.description}
+              </p>
+              <div
+                className="inline-flex items-center gap-1.5 self-start"
+                style={{
+                  background: "rgba(255,255,255,0.12)",
+                  border: "1px solid rgba(255,255,255,0.22)",
+                  backdropFilter: "blur(8px)",
+                  padding: "0.3rem 0.75rem",
+                  borderRadius: "999px",
+                  fontSize: "0.72rem",
+                  letterSpacing: "-0.01em",
+                  color: "white",
+                }}
+              >
+                View Project <ArrowUpRight style={{ width: "0.7rem", height: "0.7rem" }} />
+              </div>
+            </div>
+
+            {/* Card footer */}
+            <div className="p-3 border-t border-border flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <p
+                  className="truncate"
+                  style={{
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    fontWeight: 600,
+                    fontSize: "0.875rem",
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  {project.name}
+                </p>
+                <Badge
+                  variant={badgeVariant[project.category]}
+                  style={{ fontSize: "0.62rem", letterSpacing: "-0.01em", shrink: 0 }}
+                >
+                  {project.category}
+                </Badge>
+              </div>
+              <span
+                className="shrink-0"
+                style={{ fontSize: "0.72rem", color: "var(--muted-foreground)", letterSpacing: "-0.01em" }}
+              >
+                {project.year}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
