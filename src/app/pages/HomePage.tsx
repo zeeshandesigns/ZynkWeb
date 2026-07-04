@@ -3,19 +3,18 @@ import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
 import { Separator } from "../components/ui/separator";
-import {
-  ArrowRight,
-  Code2,
-  Layers,
-  MapPin,
-  Palette,
-  Zap,
-} from "lucide-react";
+import { ArrowRight, Code2, Download, Layers, MapPin, Palette, Zap } from "lucide-react";
+import { AtAGlanceBar } from "../components/AtAGlanceBar";
+import { ExperienceSection } from "../components/ExperienceSection";
+import { EducationSection } from "../components/EducationSection";
+import { ToolkitSection } from "../components/ToolkitSection";
+import { TestimonialsSection } from "../components/TestimonialsSection";
+import { NowSection } from "../components/NowSection";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const stats = [
-  { value: "6+", label: "Years Experience" },
+  { value: "6+", label: "Years Active" },
   { value: "40+", label: "Projects Shipped" },
   { value: "3", label: "Startups Built" },
   { value: "12+", label: "Happy Clients" },
@@ -39,60 +38,14 @@ const whatIDo = [
   },
 ];
 
-const experience = [
-  {
-    role: "Founder & Product Lead",
-    company: "Zynk",
-    period: "2022 – Present",
-    type: "Full-time",
-    description:
-      "Building a design + development studio that ships end-to-end software products for startups and scale-ups. Responsible for product strategy, design, and engineering across all client projects.",
-    tags: ["Product Strategy", "React", "Figma", "Node.js"],
-    current: true,
-  },
-  {
-    role: "Senior Product Designer & Developer",
-    company: "Independent",
-    period: "2020 – 2022",
-    type: "Freelance",
-    description:
-      "Embedded with startups across fintech, health-tech, and SaaS verticals. Led product design and shipped frontend code across 15+ client projects — from 0-to-1 and growth-stage.",
-    tags: ["UX Design", "TypeScript", "Figma", "Next.js"],
-    current: false,
-  },
-  {
-    role: "Front-End Engineer",
-    company: "TechCo",
-    period: "2018 – 2020",
-    type: "Full-time",
-    description:
-      "Built production-grade React applications for e-commerce and logistics clients. Led the migration from JavaScript to TypeScript and introduced design system tooling for the first time.",
-    tags: ["React", "TypeScript", "CSS", "REST APIs"],
-    current: false,
-  },
+const impactNumbers = [
+  { value: "£2M+", label: "Client revenue influenced" },
+  { value: "50k", label: "App downloads (Pulse Health)" },
+  { value: "1.7k★", label: "Combined GitHub stars" },
+  { value: "50+", label: "Mentorship sessions" },
 ];
 
-const skillGroups: { label: string; items: string[] }[] = [
-  {
-    label: "Design & Product",
-    items: ["Figma", "Design Systems", "UX Research", "Prototyping", "Brand Identity", "Product Strategy"],
-  },
-  {
-    label: "Frontend",
-    items: ["React", "TypeScript", "Next.js", "Tailwind CSS", "Motion", "Three.js"],
-  },
-  {
-    label: "Backend",
-    items: ["Node.js", "PostgreSQL", "GraphQL", "Prisma", "REST APIs", "Supabase"],
-  },
-  {
-    label: "Tooling",
-    items: ["Git", "Vite", "Vercel", "AWS", "Linear", "Notion"],
-  },
-];
-
-
-// ─── Section header ───────────────────────────────────────────────────────────
+// ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -130,10 +83,9 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ─── Component ───────────────────────────────────────────────────────────────
+// ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
-
   return (
     <div className="min-h-full">
 
@@ -142,7 +94,7 @@ export default function HomePage() {
         className="relative overflow-hidden"
         style={{ minHeight: "calc(100svh - 4rem)" }}
       >
-        {/* Dot grid background */}
+        {/* Dot grid */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -160,14 +112,15 @@ export default function HomePage() {
             width: "40rem",
             height: "40rem",
             borderRadius: "50%",
-            background:
-              "radial-gradient(circle, color-mix(in oklch, var(--primary) 18%, transparent), transparent 65%)",
+            background: "radial-gradient(circle, color-mix(in oklch, var(--primary) 18%, transparent), transparent 65%)",
             filter: "blur(48px)",
           }}
         />
 
-        <div className="relative max-w-6xl mx-auto px-6 flex flex-col justify-center" style={{ minHeight: "calc(100svh - 4rem)", paddingTop: "4rem", paddingBottom: "5rem" }}>
-          {/* Available badge */}
+        <div
+          className="relative max-w-6xl mx-auto px-6 flex flex-col justify-center"
+          style={{ minHeight: "calc(100svh - 4rem)", paddingTop: "4rem", paddingBottom: "5rem" }}
+        >
           <div className="mb-8">
             <Badge variant="outline" style={{ letterSpacing: "-0.01em" }}>
               <span
@@ -178,7 +131,6 @@ export default function HomePage() {
             </Badge>
           </div>
 
-          {/* Name */}
           <h1
             style={{
               fontFamily: "'Plus Jakarta Sans', sans-serif",
@@ -193,7 +145,6 @@ export default function HomePage() {
             <span style={{ color: "var(--primary)" }}>Haider</span>
           </h1>
 
-          {/* Role */}
           <p
             className="mt-6 mb-4"
             style={{
@@ -207,7 +158,6 @@ export default function HomePage() {
             Designer &amp; Full-Stack Developer · Founder at Zynk
           </p>
 
-          {/* Tagline */}
           <p
             className="max-w-lg"
             style={{
@@ -220,7 +170,6 @@ export default function HomePage() {
             I design and build software — end to end. From product strategy and UX to shipped code.
           </p>
 
-          {/* CTAs */}
           <div className="flex flex-wrap gap-3 mt-8">
             <Link to="/work">
               <Button size="lg" style={{ letterSpacing: "-0.025em" }}>
@@ -232,6 +181,11 @@ export default function HomePage() {
                 Get in Touch
               </Button>
             </Link>
+            <a href="/resume.pdf" download="Zeeshan_Haider_CV.pdf">
+              <Button size="lg" variant="ghost" style={{ letterSpacing: "-0.025em" }}>
+                <Download className="w-4 h-4" /> Download CV
+              </Button>
+            </a>
           </div>
 
           {/* Stats */}
@@ -261,11 +215,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── About Me ─────────────────────────────────────────────────────── */}
+      {/* ── At-a-Glance Bar ──────────────────────────────────────────────── */}
+      <AtAGlanceBar />
+
+      {/* ── About ────────────────────────────────────────────────────────── */}
       <section id="about" className="py-24 border-t border-border">
         <div className="max-w-6xl mx-auto px-6">
 
-          {/* Bio */}
+          {/* Bio + currently */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
             <div>
               <SectionLabel>About Me</SectionLabel>
@@ -283,11 +240,10 @@ export default function HomePage() {
               </div>
               <div className="mt-6 flex items-center gap-2 text-muted-foreground">
                 <MapPin className="w-4 h-4 text-primary" />
-                <span style={{ fontSize: "0.875rem", letterSpacing: "-0.015em" }}>Remote · Based in the UK</span>
+                <span style={{ fontSize: "0.875rem", letterSpacing: "-0.015em" }}>Remote · Based in Manchester, UK</span>
               </div>
             </div>
 
-            {/* Currently card + highlights */}
             <div className="space-y-4">
               <Card className="border-primary/20" style={{ background: "color-mix(in oklch, var(--primary) 4%, var(--card))" }}>
                 <CardHeader className="pb-3">
@@ -323,8 +279,46 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* Impact numbers */}
+          <div
+            className="grid grid-cols-2 md:grid-cols-4 gap-px rounded-2xl overflow-hidden border border-border"
+            style={{ background: "var(--border)" }}
+          >
+            {impactNumbers.map(({ value, label }) => (
+              <div
+                key={label}
+                className="flex flex-col items-center justify-center py-8 px-4 text-center"
+                style={{ background: "var(--card)" }}
+              >
+                <p
+                  style={{
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    fontWeight: 800,
+                    fontSize: "clamp(1.5rem, 3vw, 2rem)",
+                    letterSpacing: "-0.04em",
+                    color: "var(--primary)",
+                    lineHeight: 1,
+                  }}
+                  className="mb-2"
+                >
+                  {value}
+                </p>
+                <p
+                  className="text-muted-foreground"
+                  style={{ fontSize: "0.775rem", letterSpacing: "-0.01em", lineHeight: 1.4 }}
+                >
+                  {label}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <Separator className="mt-20" />
+
           {/* What I do */}
-          <div className="mb-20">
+          <div className="pt-16">
+            <SectionLabel>Disciplines</SectionLabel>
+            <SectionTitle>What I Do</SectionTitle>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {whatIDo.map(({ icon: Icon, title, body }) => (
                 <Card key={title} className="group hover:border-primary/40 transition-colors">
@@ -354,110 +348,26 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-
-          <Separator className="mb-20" />
-
-          {/* Experience */}
-          <div className="mb-20">
-            <SectionLabel>Experience</SectionLabel>
-            <SectionTitle>Where I've Worked</SectionTitle>
-
-            <div className="space-y-4 mt-8">
-              {experience.map((exp) => (
-                <Card key={exp.role + exp.company} className={exp.current ? "border-primary/30" : ""}>
-                  <CardContent className="pt-5">
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
-                      <div>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <p
-                            style={{
-                              fontFamily: "'Plus Jakarta Sans', sans-serif",
-                              fontWeight: 700,
-                              fontSize: "1rem",
-                              letterSpacing: "-0.025em",
-                            }}
-                          >
-                            {exp.role}
-                          </p>
-                          {exp.current && (
-                            <Badge style={{ letterSpacing: "-0.01em", fontSize: "0.65rem" }}>
-                              Current
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="text-muted-foreground" style={{ fontSize: "0.875rem", letterSpacing: "-0.015em" }}>
-                          {exp.company} · {exp.type}
-                        </p>
-                      </div>
-                      <span
-                        className="text-muted-foreground shrink-0"
-                        style={{ fontSize: "0.8rem", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}
-                      >
-                        {exp.period}
-                      </span>
-                    </div>
-
-                    <p className="text-muted-foreground mb-4" style={{ fontSize: "0.875rem", letterSpacing: "-0.015em", lineHeight: 1.65 }}>
-                      {exp.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-1.5">
-                      {exp.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" style={{ fontSize: "0.72rem", letterSpacing: "-0.01em" }}>
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-
-          <Separator className="mb-20" />
-
-          {/* Skills */}
-          <div>
-            <SectionLabel>Skills</SectionLabel>
-            <SectionTitle>Toolkit</SectionTitle>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8">
-              {skillGroups.map(({ label, items }) => (
-                <div key={label}>
-                  <p
-                    style={{
-                      fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      fontWeight: 600,
-                      fontSize: "0.8rem",
-                      letterSpacing: "0.05em",
-                      color: "var(--muted-foreground)",
-                      textTransform: "uppercase",
-                    }}
-                    className="mb-3"
-                  >
-                    {label}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {items.map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-3 py-1.5 rounded-lg border border-border text-sm transition-colors hover:border-primary/40 hover:text-primary"
-                        style={{ letterSpacing: "-0.015em", background: "var(--card)" }}
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
+      {/* ── Experience ───────────────────────────────────────────────────── */}
+      <ExperienceSection />
+
+      {/* ── Education ────────────────────────────────────────────────────── */}
+      <EducationSection />
+
+      {/* ── Toolkit ──────────────────────────────────────────────────────── */}
+      <ToolkitSection />
+
+      {/* ── Testimonials ─────────────────────────────────────────────────── */}
+      <TestimonialsSection />
+
+      {/* ── Now ──────────────────────────────────────────────────────────── */}
+      <NowSection />
 
       {/* ── Footer ───────────────────────────────────────────────────────── */}
-      <footer className="border-t border-border py-8">
+      <footer className="border-t border-border py-8" style={{ background: "var(--secondary)" }}>
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <div className="w-5 h-5 rounded bg-primary flex items-center justify-center">
@@ -487,6 +397,15 @@ export default function HomePage() {
             >
               Contact
             </Link>
+            <Separator orientation="vertical" className="h-4" />
+            <a
+              href="/resume.pdf"
+              download="Zeeshan_Haider_CV.pdf"
+              className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
+              style={{ fontSize: "0.8rem", letterSpacing: "-0.01em" }}
+            >
+              <Download className="w-3 h-3" /> CV
+            </a>
             <Separator orientation="vertical" className="h-4" />
             <Link
               to="/design-system"
