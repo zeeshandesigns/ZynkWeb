@@ -7,8 +7,8 @@ const contactLinks = [
   {
     icon: Mail,
     label: "Email",
-    value: "hello@zynk.studio",
-    href: "mailto:hello@zynk.studio",
+    value: "hello@zynkit.tech",
+    href: "mailto:hello@zynkit.tech",
     sub: "Best for project enquiries",
   },
   {

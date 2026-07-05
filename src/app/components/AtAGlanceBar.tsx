@@ -1,42 +1,73 @@
+import { useEffect, useState } from "react";
 import { Briefcase, Clock, MapPin, Sparkles, TrendingUp, Zap } from "lucide-react";
+import { API } from "../../utils/supabase";
+// @ts-ignore
+import { publicAnonKey } from "/utils/supabase/info";
 
 const START_YEAR = 2018;
 
-const items = [
-  {
-    icon: MapPin,
-    label: "Location",
-    value: "Manchester, UK · Remote",
-  },
-  {
-    icon: Sparkles,
-    label: "Status",
-    value: "Open to Work",
-    dot: { color: "oklch(0.65 0.20 145)" },
-  },
-  {
-    icon: TrendingUp,
-    label: "Active Since",
-    value: `${START_YEAR} · ${new Date().getFullYear() - START_YEAR}+ yrs`,
-  },
-  {
-    icon: Zap,
-    label: "Focus",
-    value: "Design + Engineering",
-  },
-  {
-    icon: Briefcase,
-    label: "Work Type",
-    value: "Freelance · Advisory · Full-time",
-  },
-  {
-    icon: Clock,
-    label: "Timezone",
-    value: "GMT / BST",
-  },
-];
+type Availability = {
+  available: boolean;
+  statusText: string;
+  workTypes: string;
+};
+
+const DEFAULTS: Availability = {
+  available: true,
+  statusText: "Open to Work",
+  workTypes: "Freelance · Advisory · Full-time",
+};
 
 export function AtAGlanceBar() {
+  const [avail, setAvail] = useState<Availability>(DEFAULTS);
+
+  useEffect(() => {
+    fetch(`${API}/content/availability`, {
+      headers: { Authorization: `Bearer ${publicAnonKey}` },
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.value) setAvail({ ...DEFAULTS, ...res.value });
+      })
+      .catch(() => {});
+  }, []);
+
+  const items = [
+    {
+      icon: MapPin,
+      label: "Location",
+      value: "Manchester, UK · Remote",
+    },
+    {
+      icon: Sparkles,
+      label: "Status",
+      value: avail.statusText,
+      dot: avail.available
+        ? { color: "oklch(0.65 0.20 145)" }
+        : { color: "var(--muted-foreground)" },
+    },
+    {
+      icon: TrendingUp,
+      label: "Active Since",
+      value: `${START_YEAR} · ${new Date().getFullYear() - START_YEAR}+ yrs`,
+    },
+    {
+      icon: Zap,
+      label: "Focus",
+      value: "Design + Engineering",
+    },
+    {
+      icon: Briefcase,
+      label: "Work Type",
+      value: avail.workTypes,
+    },
+    {
+      icon: Clock,
+      label: "Timezone",
+      value: "GMT / BST",
+    },
+  ];
+
   return (
     <div className="border-y border-border" style={{ background: "var(--secondary)" }}>
       <div className="max-w-6xl mx-auto px-6 py-4">

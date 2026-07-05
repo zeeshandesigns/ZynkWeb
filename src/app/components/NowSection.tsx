@@ -1,33 +1,57 @@
-import { BookOpen, Code2, MapPin, Lightbulb } from "lucide-react";
+import { useEffect, useState } from "react";
+import { BookOpen, Code2, Lightbulb, MapPin } from "lucide-react";
+import { API } from "../../utils/supabase";
+// @ts-ignore
+import { publicAnonKey } from "/utils/supabase/info";
 
-const nowItems = [
-  {
-    icon: Code2,
-    label: "Building",
-    value: "Next version of the Zynk client toolkit — shared React components and Supabase integrations for rapid product development.",
-  },
-  {
-    icon: Lightbulb,
-    label: "Learning",
-    value: "Three.js + WebGL for interactive 3D experiences in the browser, and exploring AI-assisted design workflows.",
-  },
-  {
-    icon: BookOpen,
-    label: "Reading",
-    value: "\"Shape Up\" by Ryan Singer (Basecamp) and \"The Design of Everyday Things\" by Don Norman.",
-  },
-  {
-    icon: MapPin,
-    label: "Based",
-    value: "Manchester, UK — working across GMT and EST time zones with clients remotely.",
-  },
+type NowData = {
+  building: string;
+  learning: string;
+  reading: string;
+  based: string;
+  updatedAt?: string;
+};
+
+const DEFAULTS: NowData = {
+  building:
+    "Next version of the Zynk client toolkit — shared React components and Supabase integrations for rapid product development.",
+  learning:
+    "Three.js + WebGL for interactive 3D experiences in the browser, and exploring AI-assisted design workflows.",
+  reading:
+    '"Shape Up" by Ryan Singer (Basecamp) and "The Design of Everyday Things" by Don Norman.',
+  based: "Manchester, UK — working across GMT and EST time zones with clients remotely.",
+};
+
+const ITEMS = [
+  { key: "building" as keyof NowData, icon: Code2, label: "Building" },
+  { key: "learning" as keyof NowData, icon: Lightbulb, label: "Learning" },
+  { key: "reading" as keyof NowData, icon: BookOpen, label: "Reading" },
+  { key: "based" as keyof NowData, icon: MapPin, label: "Based" },
 ];
 
 export function NowSection() {
+  const [data, setData] = useState<NowData>(DEFAULTS);
+
+  useEffect(() => {
+    fetch(`${API}/content/now`, {
+      headers: { Authorization: `Bearer ${publicAnonKey}` },
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.value) setData({ ...DEFAULTS, ...res.value });
+      })
+      .catch(() => {}); // silently fall back to defaults
+  }, []);
+
+  const updatedLabel = data.updatedAt
+    ? new Date(data.updatedAt).toLocaleDateString("en-GB", { month: "long", year: "numeric" })
+    : "July 2026";
+
   return (
     <section className="py-20 border-t border-border">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10 lg:gap-16 items-start">
+
           {/* Left */}
           <div>
             <p
@@ -56,24 +80,24 @@ export function NowSection() {
             >
               What I'm up to
             </h2>
-            <p className="text-muted-foreground" style={{ fontSize: "0.875rem", letterSpacing: "-0.015em", lineHeight: 1.65 }}>
-              A snapshot of what I'm currently working on, learning, and thinking about. Updated regularly.
+            <p
+              className="text-muted-foreground"
+              style={{ fontSize: "0.875rem", letterSpacing: "-0.015em", lineHeight: 1.65 }}
+            >
+              A snapshot of what I'm currently working on, learning, and thinking about.
             </p>
             <p
               className="mt-4"
               style={{ fontSize: "0.72rem", letterSpacing: "-0.01em", color: "var(--muted-foreground)" }}
             >
-              Last updated July 2026
+              Last updated {updatedLabel}
             </p>
           </div>
 
           {/* Right — grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {nowItems.map(({ icon: Icon, label, value }) => (
-              <div
-                key={label}
-                className="p-5 rounded-xl border border-border bg-card"
-              >
+            {ITEMS.map(({ key, icon: Icon, label }) => (
+              <div key={key} className="p-5 rounded-xl border border-border bg-card">
                 <div className="flex items-center gap-2 mb-3">
                   <div
                     className="w-7 h-7 rounded-lg flex items-center justify-center"
@@ -92,8 +116,11 @@ export function NowSection() {
                     {label}
                   </span>
                 </div>
-                <p className="text-muted-foreground" style={{ fontSize: "0.825rem", letterSpacing: "-0.015em", lineHeight: 1.65 }}>
-                  {value}
+                <p
+                  className="text-muted-foreground"
+                  style={{ fontSize: "0.825rem", letterSpacing: "-0.015em", lineHeight: 1.65 }}
+                >
+                  {data[key] as string}
                 </p>
               </div>
             ))}

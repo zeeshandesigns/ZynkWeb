@@ -564,7 +564,7 @@ function Confirmation({
   gcalUrl.searchParams.set("action", "TEMPLATE");
   gcalUrl.searchParams.set("text", `${session?.label} with Zeeshan Haider`);
   gcalUrl.searchParams.set("dates", format(dateObj, "yyyyMMdd'T'HHmm00") + "/" + format(dateObj, "yyyyMMdd'T'HHmm00"));
-  gcalUrl.searchParams.set("details", "Booked via zynk.studio");
+  gcalUrl.searchParams.set("details", "Booked via zynkit.tech");
 
   return (
     <div className="text-center">
