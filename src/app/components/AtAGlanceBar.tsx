@@ -4,7 +4,7 @@ import { API } from "../../utils/supabase";
 // @ts-ignore
 import { publicAnonKey } from "/utils/supabase/info";
 
-const START_YEAR = 2018;
+const START_YEAR = 2022;
 
 type Availability = {
   available: boolean;
@@ -36,7 +36,7 @@ export function AtAGlanceBar() {
     {
       icon: MapPin,
       label: "Location",
-      value: "Manchester, UK · Remote",
+      value: "Lahore, Pakistan",
     },
     {
       icon: Sparkles,
@@ -64,7 +64,7 @@ export function AtAGlanceBar() {
     {
       icon: Clock,
       label: "Timezone",
-      value: "GMT / BST",
+      value: "PKT (UTC+5)",
     },
   ];
 

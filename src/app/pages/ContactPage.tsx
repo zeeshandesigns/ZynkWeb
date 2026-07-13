@@ -1,4 +1,5 @@
 import { ArrowUpRight, Github, Linkedin, Mail, MapPin, Twitter } from "lucide-react";
+import { PageMeta } from "../components/PageMeta";
 import { Badge } from "../components/ui/badge";
 import { Separator } from "../components/ui/separator";
 import { BookingWidget } from "../components/BookingWidget";
@@ -75,6 +76,11 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function ContactPage() {
   return (
     <div className="min-h-full">
+      <PageMeta
+        title="Contact & Booking"
+        description="Book a call or get in touch. Available for design, development, and strategy projects. Based in Lahore, working globally."
+        path="/contact"
+      />
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <div
@@ -115,7 +121,7 @@ export default function ContactPage() {
 
           <div className="flex items-center gap-2 mt-4 text-muted-foreground">
             <MapPin className="w-3.5 h-3.5 text-primary" />
-            <span style={{ fontSize: "0.825rem", letterSpacing: "-0.015em" }}>Remote · Based in the UK</span>
+            <span style={{ fontSize: "0.825rem", letterSpacing: "-0.015em" }}>Remote · Based in Lahore, PK</span>
           </div>
         </div>
       </div>

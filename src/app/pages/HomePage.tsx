@@ -1,9 +1,10 @@
 import { Link } from "react-router";
+import { PageMeta } from "../components/PageMeta";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
 import { Separator } from "../components/ui/separator";
-import { ArrowRight, Code2, Download, Layers, MapPin, Palette, Zap } from "lucide-react";
+import { ArrowRight, Code2, Download, Layers, MapPin, Palette, Video, Zap } from "lucide-react";
 import { AtAGlanceBar } from "../components/AtAGlanceBar";
 import { ExperienceSection } from "../components/ExperienceSection";
 import { EducationSection } from "../components/EducationSection";
@@ -14,7 +15,7 @@ import { NowSection } from "../components/NowSection";
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const stats = [
-  { value: "6+", label: "Years Active" },
+  { value: "3+", label: "Years Active" },
   { value: "40+", label: "Projects Shipped" },
   { value: "3", label: "Startups Built" },
   { value: "12+", label: "Happy Clients" },
@@ -35,6 +36,11 @@ const whatIDo = [
     icon: Layers,
     title: "Strategy",
     body: "I think in systems, not screens. Product roadmapping, go-to-market, and building for scale.",
+  },
+  {
+    icon: Video,
+    title: "Video Edit",
+    body: "Reels, ads, and branded motion content — edited, optimised, and ready to publish on every platform.",
   },
 ];
 
@@ -88,6 +94,10 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 export default function HomePage() {
   return (
     <div className="min-h-full">
+      <PageMeta
+        description="Designer & Full-Stack Developer based in Lahore, PK. I design, build, and ship products that look great and work fast. Available for freelance projects."
+        path="/"
+      />
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section
@@ -240,7 +250,7 @@ export default function HomePage() {
               </div>
               <div className="mt-6 flex items-center gap-2 text-muted-foreground">
                 <MapPin className="w-4 h-4 text-primary" />
-                <span style={{ fontSize: "0.875rem", letterSpacing: "-0.015em" }}>Remote · Based in Manchester, UK</span>
+                <span style={{ fontSize: "0.875rem", letterSpacing: "-0.015em" }}>Remote · Based in Lahore, PK</span>
               </div>
             </div>
 
@@ -319,7 +329,7 @@ export default function HomePage() {
           <div className="pt-16">
             <SectionLabel>Disciplines</SectionLabel>
             <SectionTitle>What I Do</SectionTitle>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {whatIDo.map(({ icon: Icon, title, body }) => (
                 <Card key={title} className="group hover:border-primary/40 transition-colors">
                   <CardContent className="pt-6">

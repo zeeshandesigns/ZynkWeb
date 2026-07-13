@@ -44,16 +44,6 @@ const devGroups: ToolGroup[] = [
     ],
   },
   {
-    label: "Backend & Data",
-    tools: [
-      { name: "Node.js", emoji: "🟢", level: 3 },
-      { name: "PostgreSQL", emoji: "🐘", level: 2 },
-      { name: "Supabase", emoji: "⚡", level: 3 },
-      { name: "GraphQL", emoji: "◈", level: 2 },
-      { name: "Prisma", emoji: "🔺", level: 2 },
-    ],
-  },
-  {
     label: "Infrastructure",
     tools: [
       { name: "Vercel", emoji: "▲", level: 3 },

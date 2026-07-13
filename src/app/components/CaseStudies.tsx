@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { ArrowUpRight, Zap } from "lucide-react";
 import { Badge } from "./ui/badge";
+import { ProjectModal } from "./ProjectModal";
 
 type CaseStudy = {
   title: string;
@@ -83,14 +85,64 @@ const caseStudies: CaseStudy[] = [
 ];
 
 
+const PJB = "'Plus Jakarta Sans', sans-serif";
+
 export function CaseStudies() {
+  const [selectedCase, setSelectedCase] = useState<CaseStudy | null>(null);
+
   return (
+    <>
+    {selectedCase && (
+      <ProjectModal onClose={() => setSelectedCase(null)}>
+        <div>
+          <div style={{ overflow: "hidden", height: 220 }}>
+            <img
+              src={selectedCase.image}
+              alt={selectedCase.title}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
+          <div style={{ padding: "1.5rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", marginBottom: "0.875rem" }}>
+              <span style={{ fontFamily: PJB, fontWeight: 600, fontSize: "0.7rem", letterSpacing: "-0.01em", background: "color-mix(in oklch, var(--primary) 10%, transparent)", color: "var(--primary)", padding: "0.2rem 0.6rem", borderRadius: 999 }}>
+                {selectedCase.category}
+              </span>
+              <span style={{ fontSize: "0.7rem", color: "var(--muted-foreground)" }}>{selectedCase.year} · {selectedCase.duration}</span>
+            </div>
+            <h2 style={{ fontFamily: PJB, fontWeight: 800, fontSize: "1.4rem", letterSpacing: "-0.04em", marginBottom: "0.25rem" }}>
+              {selectedCase.title}
+            </h2>
+            <p style={{ fontSize: "0.825rem", color: "var(--muted-foreground)", letterSpacing: "-0.01em", marginBottom: "1rem" }}>
+              {selectedCase.subtitle}
+            </p>
+            <div style={{ marginBottom: "1rem" }}>
+              <p style={{ fontFamily: PJB, fontWeight: 600, fontSize: "0.65rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--muted-foreground)", marginBottom: "0.4rem" }}>Challenge</p>
+              <p style={{ fontSize: "0.875rem", lineHeight: 1.7, letterSpacing: "-0.015em", color: "var(--muted-foreground)" }}>{selectedCase.challenge}</p>
+            </div>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: "0.625rem", padding: "0.75rem", borderRadius: 10, background: "color-mix(in oklch, var(--primary) 7%, transparent)", marginBottom: "1rem" }}>
+              <Zap style={{ width: 14, height: 14, color: "var(--primary)", marginTop: 2, flexShrink: 0 }} />
+              <div>
+                <p style={{ fontFamily: PJB, fontWeight: 700, fontSize: "1rem", letterSpacing: "-0.03em", color: "var(--primary)" }}>{selectedCase.outcome}</p>
+                <p style={{ fontSize: "0.72rem", color: "var(--muted-foreground)" }}>{selectedCase.outcomeDetail}</p>
+              </div>
+            </div>
+            <p style={{ fontSize: "0.875rem", lineHeight: 1.7, letterSpacing: "-0.015em", color: "var(--muted-foreground)", marginBottom: "1.25rem" }}>{selectedCase.description}</p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.375rem" }}>
+              {selectedCase.tags.map((tag) => (
+                <Badge key={tag} variant="outline" style={{ fontSize: "0.65rem" }}>{tag}</Badge>
+              ))}
+            </div>
+          </div>
+        </div>
+      </ProjectModal>
+    )}
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {caseStudies.map((cs) => (
           <article
             key={cs.title}
             className="group flex flex-col overflow-hidden rounded-xl border border-border cursor-pointer transition-all hover:shadow-xl hover:border-primary/30"
             style={{ background: "var(--card)" }}
+            onClick={() => setSelectedCase(cs)}
           >
             {/* Cover image */}
             <div className="relative overflow-hidden shrink-0" style={{ height: "220px" }}>
@@ -221,5 +273,6 @@ export function CaseStudies() {
           </article>
       ))}
     </div>
+    </>
   );
 }

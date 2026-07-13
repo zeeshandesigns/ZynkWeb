@@ -183,6 +183,7 @@ function FeaturedCard({ project }: { project: DevProject }) {
 
 function CompactCard({ project }: { project: DevProject }) {
   return (
+    <a href={project.url} target="_blank" rel="noreferrer" style={{ display: "block", height: "100%", textDecoration: "none", color: "inherit" }}>
     <Card className="group hover:border-primary/40 transition-colors h-full flex flex-col">
       <CardContent className="pt-5 flex flex-col flex-1">
         <div className="flex items-start justify-between mb-3">
@@ -200,9 +201,9 @@ function CompactCard({ project }: { project: DevProject }) {
               {project.name}
             </p>
           </div>
-          <a href={project.url} className="text-muted-foreground hover:text-primary transition-colors shrink-0 ml-2">
+          <span className="text-muted-foreground group-hover:text-primary transition-colors shrink-0 ml-2">
             <ExternalLink className="w-3.5 h-3.5" />
-          </a>
+          </span>
         </div>
 
         <Badge variant="outline" style={{ fontSize: "0.62rem", letterSpacing: "-0.01em", alignSelf: "flex-start", marginBottom: "0.75rem" }}>
@@ -236,6 +237,7 @@ function CompactCard({ project }: { project: DevProject }) {
         </div>
       </CardContent>
     </Card>
+    </a>
   );
 }
 

@@ -38,6 +38,94 @@ async function requireAuth(c: any, next: any) {
   await next();
 }
 
+// ── Email notification ────────────────────────────────────────────────────────
+
+async function sendBookingNotification(booking: {
+  id: string;
+  name: string;
+  email: string;
+  company: string;
+  message: string;
+  date: string;
+  time: string;
+  sessionType: string;
+}) {
+  const key = Deno.env.get("RESEND_API_KEY");
+  if (!key) return; // key not configured — skip silently
+
+  const { id, name, email, company, message, date, time, sessionType } = booking;
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8" />
+      <style>
+        body { margin: 0; padding: 0; background: #f4f6f9; font-family: -apple-system, sans-serif; }
+        .wrap { max-width: 560px; margin: 32px auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .header { background: oklch(0.14 0.03 258); padding: 28px 32px; }
+        .header h1 { color: white; margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+        .header p { color: rgba(255,255,255,0.45); margin: 4px 0 0; font-size: 13px; }
+        .body { padding: 28px 32px; }
+        .row { margin-bottom: 18px; }
+        .label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #888; margin-bottom: 4px; }
+        .value { font-size: 15px; color: #111; font-weight: 500; }
+        .divider { border: none; border-top: 1px solid #eee; margin: 24px 0; }
+        .footer { padding: 16px 32px; background: #f4f6f9; font-size: 12px; color: #aaa; }
+        .highlight { background: oklch(0.91 0.05 220); border-radius: 6px; padding: 12px 16px; margin-bottom: 18px; }
+        .highlight .value { color: oklch(0.22 0.05 258); font-size: 17px; }
+      </style>
+    </head>
+    <body>
+      <div class="wrap">
+        <div class="header">
+          <h1>New booking on zynkit.tech</h1>
+          <p>${new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}</p>
+        </div>
+        <div class="body">
+          <div class="highlight">
+            <div class="label">Session</div>
+            <div class="value">${sessionType} — ${date} at ${time}</div>
+          </div>
+          <div class="row">
+            <div class="label">Name</div>
+            <div class="value">${name}</div>
+          </div>
+          <div class="row">
+            <div class="label">Email</div>
+            <div class="value"><a href="mailto:${email}" style="color:oklch(0.546 0.218 258);text-decoration:none;">${email}</a></div>
+          </div>
+          ${company ? `<div class="row"><div class="label">Company</div><div class="value">${company}</div></div>` : ""}
+          ${message ? `<hr class="divider" /><div class="row"><div class="label">Message</div><div class="value" style="line-height:1.6;white-space:pre-wrap;">${message}</div></div>` : ""}
+        </div>
+        <div class="footer">Booking ref: ${id} &nbsp;·&nbsp; <a href="https://zynkit.tech/admin" style="color:#888;">Open Admin Panel →</a></div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${key}`,
+    },
+    body: JSON.stringify({
+      from: "Zynk Bookings <bookings@zynkit.tech>",
+      to: ["hello@zynkit.tech"],
+      subject: `New booking: ${sessionType} — ${name} on ${date}`,
+      html,
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Resend API error ${res.status}: ${err}`);
+  }
+
+  console.log(`Booking notification sent for ${id}`);
+}
+
 // ── Health ────────────────────────────────────────────────────────────────────
 
 app.get("/make-server-e1000fad/health", (c) => c.json({ status: "ok" }));
@@ -103,6 +191,12 @@ app.post("/make-server-e1000fad/bookings", async (c) => {
     await kv.set(`slots:${date}`, JSON.stringify(bookedTimes));
 
     console.log(`Booking created: ${id} — ${sessionType} on ${date} at ${time} for ${email}`);
+
+    // Fire-and-forget email notification — silently skipped if key not set
+    sendBookingNotification(booking).catch((e) =>
+      console.log("Email notification failed (non-fatal):", e),
+    );
+
     return c.json({ success: true, booking });
   } catch (err) {
     console.log("Error creating booking:", err);

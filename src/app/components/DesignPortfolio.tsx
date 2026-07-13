@@ -1,10 +1,22 @@
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { ProjectModal } from "./ProjectModal";
 
 type DesignFilter = "All" | "Branding" | "UI/UX" | "Graphic";
 
-const designProjects = [
+type DesignProject = {
+  name: string;
+  category: DesignFilter;
+  description: string;
+  image: string;
+  year: string;
+  tags: string[];
+  url?: string;
+};
+
+const designProjects: DesignProject[] = [
   {
     name: "Nexus",
     category: "Branding" as const,
@@ -83,12 +95,67 @@ const badgeVariant: Record<DesignFilter, "default" | "secondary" | "outline"> = 
   Graphic: "outline",
 };
 
+const PJB = "'Plus Jakarta Sans', sans-serif";
+
 export function DesignPortfolio() {
   const [active, setActive] = useState<DesignFilter>("All");
+  const [selectedProject, setSelectedProject] = useState<DesignProject | null>(null);
   const shown =
     active === "All" ? designProjects : designProjects.filter((p) => p.category === active);
 
   return (
+    <>
+    {selectedProject && (
+      <ProjectModal onClose={() => setSelectedProject(null)}>
+        <div>
+          <div style={{ overflow: "hidden", aspectRatio: "16/9" }}>
+            <img
+              src={selectedProject.image}
+              alt={selectedProject.name}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </div>
+          <div style={{ padding: "1.5rem" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.75rem", marginBottom: "0.75rem", flexWrap: "wrap" }}>
+              <Badge variant={badgeVariant[selectedProject.category]} style={{ fontSize: "0.65rem" }}>
+                {selectedProject.category}
+              </Badge>
+              <span style={{ fontSize: "0.72rem", color: "var(--muted-foreground)", letterSpacing: "-0.01em" }}>
+                {selectedProject.year}
+              </span>
+            </div>
+            <h2
+              style={{
+                fontFamily: PJB,
+                fontWeight: 800,
+                fontSize: "1.5rem",
+                letterSpacing: "-0.04em",
+                marginBottom: "0.75rem",
+              }}
+            >
+              {selectedProject.name}
+            </h2>
+            <p style={{ fontSize: "0.9rem", lineHeight: 1.7, letterSpacing: "-0.015em", color: "var(--muted-foreground)", marginBottom: "1.25rem" }}>
+              {selectedProject.description}
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.375rem", marginBottom: "1.5rem" }}>
+              {selectedProject.tags.map((tag) => (
+                <Badge key={tag} variant="outline" style={{ fontSize: "0.65rem" }}>{tag}</Badge>
+              ))}
+            </div>
+            {selectedProject.url ? (
+              <Button asChild style={{ letterSpacing: "-0.02em" }}>
+                <a href={selectedProject.url} target="_blank" rel="noreferrer">Open Project →</a>
+              </Button>
+            ) : (
+              <Button disabled style={{ letterSpacing: "-0.02em" }} title="Coming soon">
+                Open Project — Coming soon
+              </Button>
+            )}
+          </div>
+        </div>
+      </ProjectModal>
+    )}
     <div>
       {/* Filter pills */}
       <div className="flex flex-wrap gap-2 mb-8">
@@ -131,6 +198,7 @@ export function DesignPortfolio() {
             key={project.name}
             className="group relative overflow-hidden rounded-xl border border-border cursor-pointer transition-shadow hover:shadow-lg"
             style={{ background: "var(--card)" }}
+            onClick={() => setSelectedProject(project)}
           >
             {/* Image */}
             <div className="overflow-hidden" style={{ aspectRatio: "4 / 3" }}>
@@ -215,5 +283,6 @@ export function DesignPortfolio() {
         ))}
       </div>
     </div>
+    </>
   );
 }
