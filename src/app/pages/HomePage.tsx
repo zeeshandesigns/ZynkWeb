@@ -39,7 +39,7 @@ const whatIDo = [
   },
   {
     icon: Video,
-    title: "Video Edit",
+    title: "Video Editing",
     body: "Reels, ads, and branded motion content — edited, optimised, and ready to publish on every platform.",
   },
 ];
@@ -165,7 +165,7 @@ export default function HomePage() {
               color: "var(--muted-foreground)",
             }}
           >
-            Designer &amp; Full-Stack Developer · Founder at Zynk
+            Designer & Full-Stack Developer · Founder at Zynk
           </p>
 
           <p

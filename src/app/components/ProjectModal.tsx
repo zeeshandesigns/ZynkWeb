@@ -33,6 +33,8 @@ export function ProjectModal({ onClose, children }: ProjectModalProps) {
       onClick={onClose}
     >
       <div
+        role="dialog"
+        aria-modal="true"
         style={{
           position: "relative",
           width: "100%",

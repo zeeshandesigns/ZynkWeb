@@ -957,9 +957,17 @@ export default function AdminDashboard() {
     statusText: "Open to Work",
     workTypes: "Freelance · Advisory · Full-time",
   });
-  const [contentLoading, setContentLoading] = useState(false);
+  const [nowLoading, setNowLoading] = useState(false);
+  const [availLoading, setAvailLoading] = useState(false);
   const [contentSaved, setContentSaved] = useState(false);
   const [availSaved, setAvailSaved] = useState(false);
+  const nowSavedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const availSavedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (nowSavedTimer.current) clearTimeout(nowSavedTimer.current);
+    if (availSavedTimer.current) clearTimeout(availSavedTimer.current);
+  }, []);
 
   // ── Auth check ──────────────────────────────────────────────────────────────
 
@@ -1044,7 +1052,7 @@ export default function AdminDashboard() {
   };
 
   const saveNowContent = async () => {
-    setContentLoading(true);
+    setNowLoading(true);
     try {
       await fetch(`${API}/admin/content/now`, {
         method: "PUT",
@@ -1052,14 +1060,15 @@ export default function AdminDashboard() {
         body: JSON.stringify({ ...nowContent, updatedAt: new Date().toISOString() }),
       });
       setContentSaved(true);
-      setTimeout(() => setContentSaved(false), 2500);
+      if (nowSavedTimer.current) clearTimeout(nowSavedTimer.current);
+      nowSavedTimer.current = setTimeout(() => setContentSaved(false), 2500);
     } finally {
-      setContentLoading(false);
+      setNowLoading(false);
     }
   };
 
   const saveAvailability = async () => {
-    setContentLoading(true);
+    setAvailLoading(true);
     try {
       await fetch(`${API}/admin/content/availability`, {
         method: "PUT",
@@ -1067,9 +1076,10 @@ export default function AdminDashboard() {
         body: JSON.stringify(availability),
       });
       setAvailSaved(true);
-      setTimeout(() => setAvailSaved(false), 2500);
+      if (availSavedTimer.current) clearTimeout(availSavedTimer.current);
+      availSavedTimer.current = setTimeout(() => setAvailSaved(false), 2500);
     } finally {
-      setContentLoading(false);
+      setAvailLoading(false);
     }
   };
 
@@ -1346,8 +1356,8 @@ export default function AdminDashboard() {
               </div>
 
               <div className="flex items-center gap-3">
-                <Button onClick={saveAvailability} disabled={contentLoading} size="sm" style={{ letterSpacing: "-0.02em" }}>
-                  {contentLoading ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving…</> : <><Edit3 className="w-3.5 h-3.5" /> Save Availability</>}
+                <Button onClick={saveAvailability} disabled={availLoading} size="sm" style={{ letterSpacing: "-0.02em" }}>
+                  {availLoading ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving…</> : <><Edit3 className="w-3.5 h-3.5" /> Save Availability</>}
                 </Button>
                 {availSaved && (
                   <span className="flex items-center gap-1" style={{ fontSize: "0.775rem", color: "oklch(0.40 0.15 145)", letterSpacing: "-0.01em" }}>
@@ -1389,8 +1399,8 @@ export default function AdminDashboard() {
               </div>
 
               <div className="flex items-center gap-3">
-                <Button onClick={saveNowContent} disabled={contentLoading} size="sm" style={{ letterSpacing: "-0.02em" }}>
-                  {contentLoading ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving…</> : <><Edit3 className="w-3.5 h-3.5" /> Save Now Section</>}
+                <Button onClick={saveNowContent} disabled={nowLoading} size="sm" style={{ letterSpacing: "-0.02em" }}>
+                  {nowLoading ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Saving…</> : <><Edit3 className="w-3.5 h-3.5" /> Save Now Section</>}
                 </Button>
                 {contentSaved && (
                   <span className="flex items-center gap-1" style={{ fontSize: "0.775rem", color: "oklch(0.40 0.15 145)", letterSpacing: "-0.01em" }}>

@@ -16,7 +16,7 @@ const fullTime: ExperienceEntry[] = [
     role: "Founder & Product Lead",
     org: "Zynk",
     period: "2022 – Present",
-    location: "Manchester, UK · Remote",
+    location: "Lahore, Pakistan · Remote",
     description:
       "Founded a design + development studio that ships end-to-end software for startups and scale-ups. Responsible for product strategy, design direction, and engineering across all client engagements. Built internal tooling, a component library, and a repeatable delivery process.",
     tags: ["Product Strategy", "React", "Figma", "Node.js", "Supabase"],
@@ -92,7 +92,7 @@ const volunteer: ExperienceEntry[] = [
     role: "Hackathon Judge & Mentor",
     org: "Local Tech Community",
     period: "2022 – Present",
-    location: "Manchester, UK",
+    location: "Lahore, Pakistan",
     description:
       "Judging and mentoring at Manchester-based hackathons and startup weekends. Focused on product design critique, technical feasibility, and go-to-market thinking.",
     tags: ["Product Critique", "Startups", "Judging", "Workshops"],

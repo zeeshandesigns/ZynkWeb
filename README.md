@@ -1,7 +1,7 @@
 
-  # ZynkWeb
+  # Zynk - Zeeshan Haider
 
-  This is a code bundle for ZynkWeb. The original project is available at https://www.figma.com/design/IVqGACBKpVfuxzEUVifVpB/ZynkWeb.
+  This is a code bundle for Zynk - Zeeshan Haider. The original project is available at https://www.figma.com/design/IVqGACBKpVfuxzEUVifVpB/Zynk---Zeeshan-Haider.
 
   ## Running the code
 

@@ -1,0 +1,23 @@
+{
+  "redirects": [
+    {
+      "source": "/portfolio",
+      "destination": "https://www.figma.com/design/maujq5zj4MbUF13BHBhJdW/Portfolio---Zeeshan-Haider?node-id=22-3&t=1mQUUFoTEECWnDoq-1",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    { "source": "/((?!portfolio).*)", "destination": "/" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "index, follow" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ]
+}

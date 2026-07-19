@@ -35,4 +35,5 @@ export const router = createBrowserRouter([
   { path: "/admin", Component: AdminDashboard },
   { path: "/onboard/:slug", Component: OnboardingKitPage },
   { path: "/manager", Component: ManagerPage },
+  { path: "*", Component: NotFoundPage },
 ]);

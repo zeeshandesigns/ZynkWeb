@@ -19,7 +19,7 @@ const DEFAULTS: NowData = {
     "Three.js + WebGL for interactive 3D experiences in the browser, and exploring AI-assisted design workflows.",
   reading:
     '"Shape Up" by Ryan Singer (Basecamp) and "The Design of Everyday Things" by Don Norman.',
-  based: "Manchester, UK — working across GMT and EST time zones with clients remotely.",
+  based: "Lahore, Pakistan — PKT (UTC+5), working with clients globally.",
 };
 
 const ITEMS = [
@@ -45,7 +45,7 @@ export function NowSection() {
 
   const updatedLabel = data.updatedAt
     ? new Date(data.updatedAt).toLocaleDateString("en-GB", { month: "long", year: "numeric" })
-    : "July 2026";
+    : new Date().toLocaleDateString("en-GB", { month: "long", year: "numeric" });
 
   return (
     <section className="py-20 border-t border-border">

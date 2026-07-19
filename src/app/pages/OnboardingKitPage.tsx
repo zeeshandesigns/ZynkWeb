@@ -321,7 +321,7 @@ export default function OnboardingKitPage() {
         {kit.faqs?.length > 0 && (
           <Section label="Frequently Asked Questions">
             {kit.faqs.map((faq, i) => (
-              <FaqItem key={i} q={faq.q} a={faq.a} />
+              <FaqItem key={faq.q.slice(0, 40)} q={faq.q} a={faq.a} />
             ))}
           </Section>
         )}

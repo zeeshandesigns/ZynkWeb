@@ -28,7 +28,8 @@ export function PageMeta({
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
-      {noIndex && <meta name="robots" content="noindex, nofollow" />}
+      <link rel="canonical" href={url} />
+      <meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow"} />
 
       {/* OpenGraph */}
       <meta property="og:site_name" content="Zynk" />

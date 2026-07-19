@@ -267,7 +267,7 @@ export function DesignPortfolio() {
                 </p>
                 <Badge
                   variant={badgeVariant[project.category]}
-                  style={{ fontSize: "0.62rem", letterSpacing: "-0.01em", shrink: 0 }}
+                  style={{ fontSize: "0.62rem", letterSpacing: "-0.01em" }}
                 >
                   {project.category}
                 </Badge>

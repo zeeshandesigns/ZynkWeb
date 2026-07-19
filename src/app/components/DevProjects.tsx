@@ -118,13 +118,22 @@ function FeaturedCard({ project }: { project: DevProject }) {
             </div>
 
             <div className="flex items-center gap-3 flex-wrap">
-              <a
-                href={project.url}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border hover:border-primary/40 hover:text-primary transition-colors"
-                style={{ fontSize: "0.825rem", letterSpacing: "-0.015em" }}
-              >
-                <Github className="w-3.5 h-3.5" /> View Source
-              </a>
+              {project.url && project.url !== "#" ? (
+                <a
+                  href={project.url}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border hover:border-primary/40 hover:text-primary transition-colors"
+                  style={{ fontSize: "0.825rem", letterSpacing: "-0.015em" }}
+                >
+                  <Github className="w-3.5 h-3.5" /> View Source
+                </a>
+              ) : (
+                <span
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border text-muted-foreground cursor-not-allowed"
+                  style={{ fontSize: "0.825rem", letterSpacing: "-0.015em" }}
+                >
+                  <Github className="w-3.5 h-3.5" /> Coming Soon
+                </span>
+              )}
               {project.demo && (
                 <a
                   href={project.demo}
@@ -182,8 +191,16 @@ function FeaturedCard({ project }: { project: DevProject }) {
 }
 
 function CompactCard({ project }: { project: DevProject }) {
+  const hasUrl = project.url && project.url !== "#";
+  const Wrapper = hasUrl
+    ? ({ children }: { children: React.ReactNode }) => (
+        <a href={project.url} target="_blank" rel="noreferrer" style={{ display: "block", height: "100%", textDecoration: "none", color: "inherit" }}>{children}</a>
+      )
+    : ({ children }: { children: React.ReactNode }) => (
+        <div style={{ height: "100%" }}>{children}</div>
+      );
   return (
-    <a href={project.url} target="_blank" rel="noreferrer" style={{ display: "block", height: "100%", textDecoration: "none", color: "inherit" }}>
+    <Wrapper>
     <Card className="group hover:border-primary/40 transition-colors h-full flex flex-col">
       <CardContent className="pt-5 flex flex-col flex-1">
         <div className="flex items-start justify-between mb-3">
@@ -237,7 +254,7 @@ function CompactCard({ project }: { project: DevProject }) {
         </div>
       </CardContent>
     </Card>
-    </a>
+    </Wrapper>
   );
 }
 
